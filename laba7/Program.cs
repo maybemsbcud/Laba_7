@@ -1,50 +1,83 @@
 ﻿using System;
+using System.Collections.Generic;
 using laba7;
 
-namespace laba7;
+namespace SinglyLinkedListApp;
 
-/// <summary>
-/// Програма для демонстрації роботи списку.[cite: 1]
-/// </summary>
 class Program
 {
     static void Main()
     {
         IMyList myList = new MyShortList();
-        short[] initialData = { 10, 14, 21, 30, 45 };
 
-        // Наповнення
-        foreach (var val in initialData) myList.AddToEnd(val);
-        Console.WriteLine("Початковий список:");
-        Print(myList);
+        Console.WriteLine("Оберіть спосіб заповнення:");
+        Console.WriteLine("1 - ввести елементи вручну");
+        Console.WriteLine("2 - використати тестові дані");
+        Console.Write("Ваш вибір (1 або 2): ");
+        
+        string choice = Console.ReadLine();
 
-        // 1. Пошук кратного
-        short div = 7;
-        Console.WriteLine($"\n1. Перший кратний {div}: {myList.FindFirstMultiple(div)}");
+        if (choice == "1")
+        {
+            Console.Write("Введіть кількість елементів: ");
+            if (int.TryParse(Console.ReadLine(), out int n) && n > 0)
+            {
+                for (int i = 0; i < n; i++)
+                {
+                    Console.Write($"Елемент {i + 1}: ");
+                    if (short.TryParse(Console.ReadLine(), out short val))
+                    {
+                        myList.AddToEnd(val);
+                    }
+                    else
+                    {
+                        Console.WriteLine("Помилка вводу. Будь ласка, введіть ціле число типу short.");
+                        i--;
+                    }
+                }
+            }
+        }
+        else
+        {
+            short[] testData = { 10, 14, 21, 30, 45, 8, 15 };
+            Console.Write("Використано тестові дані: ");
+            Console.WriteLine(string.Join(", ", testData));
+            foreach (var val in testData)
+            {
+                myList.AddToEnd(val);
+            }
+        }
 
-        // 2. Заміна парних позицій на 0
+        Console.WriteLine("\nПочатковий список: " + string.Join(" -> ", myList));
+
+        Console.Write("\nЗавдання 1 - введіть число для пошуку кратного: ");
+        if (short.TryParse(Console.ReadLine(), out short div) && div != 0)
+        {
+            var firstMultiple = myList.FindFirstMultiple(div);
+            if (firstMultiple.HasValue)
+                Console.WriteLine($"Перший елемент, кратний {div} = {firstMultiple.Value}");
+            else
+                Console.WriteLine($"Елементів, кратних {div}, не знайдено.");
+        }
+        else
+        {
+            Console.WriteLine("Некоректний дільник (або 0).");
+        }
+
         myList.ReplaceEvenWithZero();
-        Console.WriteLine("\n2. Список після заміни парних позицій на 0:");
-        Print(myList);
+        Console.WriteLine("Завдання 2: Список після заміни парних позицій на 0:");
+        Console.WriteLine(string.Join(" -> ", myList));
 
-        // 3. Фільтрація (новий список)
-        short threshold = 15;
-        var filtered = myList.FilterGreater(threshold);
-        Console.WriteLine($"\n3. Елементи більше {threshold} у новому списку:");
-        Print(filtered);
+        Console.Write("\nЗавдання 3 - введіть порогове значення: ");
+        if (short.TryParse(Console.ReadLine(), out short threshold))
+        {
+            var filteredList = myList.FilterGreater(threshold);
+            Console.WriteLine($"Елементи > {threshold}:");
+            Console.WriteLine(string.Join(" -> ", filteredList));
+        }
 
-        // 4. Видалення непарних позицій
         myList.RemoveOddPositions();
-        Console.WriteLine("\n4. Список після видалення непарних позицій:");
-        Print(myList);
-    }
-
-    /// <summary>
-    /// Метод для виведення даних (вважається використанням списку).[cite: 1]
-    /// </summary>
-    static void Print(IEnumerable<short> list)
-    {
-        foreach (var item in list) Console.Write($"{item} ");
-        Console.WriteLine();
+        Console.WriteLine("\nЗавдання 4: Список після видалення непарних позицій:");
+        Console.WriteLine(string.Join(" -> ", myList));
     }
 }
