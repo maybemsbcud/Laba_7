@@ -10,14 +10,8 @@ public class MyShortList : IMyList
     private Node? _tail;
     private int _count;
 
-    /// <summary>
-    /// Кількість елементів.
-    /// </summary>
     public int Count => _count;
 
-    /// <summary>
-    /// Індексатор для доступу на читання.[cite: 1]
-    /// </summary>
     public short this[int index]
     {
         get
@@ -29,9 +23,6 @@ public class MyShortList : IMyList
         }
     }
 
-    /// <summary>
-    /// Додавання в кінець списку.[cite: 1]
-    /// </summary>
     public void AddToEnd(short value)
     {
         var newNode = new Node(value);
@@ -48,9 +39,6 @@ public class MyShortList : IMyList
         _count++;
     }
 
-    /// <summary>
-    /// Видалення елемента за його номером (від 1).[cite: 1]
-    /// </summary>
     public void RemoveAt(int number)
     {
         var index = number - 1;
@@ -107,7 +95,6 @@ public class MyShortList : IMyList
         }
     }
 
-    // --- IEnumerable ---[cite: 1]
 
     public IEnumerator<short> GetEnumerator()
     {
